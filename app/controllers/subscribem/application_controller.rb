@@ -23,5 +23,16 @@ module Subscribem
 	  env["warden"].authenticated?(:user)
 	end
 	helper_method :user_signed_in?
+
+	def authenticate_user!
+		unless user_signed_in?
+			flash[:notice] = "Please sign in."
+			redirect_to "/sign_in"
+		end
+	end
+	def force_authentication!(account, user)
+      env["warden"].set_user(user, :scope => :user)
+      env["warden"].set_user(account, :scope => :account)
+    end
   end
 end

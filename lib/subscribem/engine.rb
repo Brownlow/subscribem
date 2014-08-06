@@ -1,5 +1,6 @@
 module Subscribem
   class Engine < ::Rails::Engine
+  	require "dynamic_form"
     isolate_namespace Subscribem
 
     config.generators do |g|
@@ -8,8 +9,11 @@ module Subscribem
 
 	require "warden"
 
+
 	initializer "subscribem.middleware.warden" do
 		Rails.application.config.middleware.use Warden::Manager do |manager|
+			manager.default_strategies :password
+
 			manager.serialize_into_session do |user|
 				user.id
 			end
@@ -20,4 +24,3 @@ module Subscribem
 	end
   end
 end
-
